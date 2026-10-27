@@ -1,6 +1,6 @@
 # subkit
 
-Swiss-army toolkit for files & text 鈥?**one engine, four distribution channels**.
+Swiss-army toolkit for files & text —**one engine, four distribution channels**.
 
 One zero-dependency core (`subwrench-core`) exposed as:
 
@@ -13,7 +13,7 @@ One zero-dependency core (`subwrench-core`) exposed as:
 
 ## Capabilities
 
-- **Subtitles**: parse / convert / shift / merge / stats across `srt`, `vtt`, `sbv`, `ass` 鈥?auto format detection, BOM-safe, CRLF-safe
+- **Subtitles**: parse / convert / shift / merge / stats across `srt`, `vtt`, `sbv`, `ass` —auto format detection, BOM-safe, CRLF-safe
 - **Text**: multilingual word count (CJK-aware), LLM token estimation (gpt/claude/gemini), 9 case transforms
 - **JSON**: validate (with error position), format, minify, recursive key sort, dot-path get
 - **Hash/ID**: uuid v4, sha256/sha1/md5, hmac, base64, random hex (node:crypto)
@@ -52,7 +52,7 @@ subkit image convert photo.png --format webp --quality 80
 BOT_TOKEN=<from @BotFather> npm run bot
 ```
 
-Send a `.srt` file 鈫?caption `to vtt`. Send a photo 鈫?caption `webp 80`. Send raw JSON 鈫?formatted back.
+Send a `.srt` file →caption `to vtt`. Send a photo →caption `webp 80`. Send raw JSON →formatted back.
 
 ## Development
 
