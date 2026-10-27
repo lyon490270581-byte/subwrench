@@ -35,7 +35,13 @@ if (process.env.HTTPS_PROXY) {
   agent = new HttpsProxyAgent(process.env.HTTPS_PROXY);
 }
 
-const bot = new Telegraf(TOKEN, { handlerTimeout: 60000, telegram: { agent } });
+// Route Telegram API through a reverse proxy (e.g. Cloudflare Worker) if set
+const apiRoot = process.env.TELEGRAM_API_ROOT;
+
+const bot = new Telegraf(TOKEN, {
+  handlerTimeout: 60000,
+  telegram: { agent, apiRoot: apiRoot || undefined },
+});
 const SUB_EXTS = ["srt", "vtt", "sbv", "ass"];
 const IMG_EXTS = ["jpg", "jpeg", "png", "webp", "avif", "tiff", "gif"];
 
