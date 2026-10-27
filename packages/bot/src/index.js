@@ -1,4 +1,5 @@
 import { Telegraf, Input } from "telegraf";
+import http from "node:http";
 import * as core from "subwrench-core";
 import { initBotDb, track, saveDb } from "./analytics.js";
 
@@ -13,24 +14,45 @@ setInterval(saveDb, 30_000); // persist analytics every 30s
 process.once("SIGINT", () => { saveDb(); process.exit(0); });
 process.once("SIGTERM", () => { saveDb(); process.exit(0); });
 
-const bot = new Telegraf(TOKEN, { handlerTimeout: 60000 });
+// Minimal health endpoint (Render web services require an open port)
+const PORT = process.env.PORT || 0;
+if (PORT) {
+  http.createServer((req, res) => {
+    if (req.url === "/health") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ ok: true, server: "subwrench-bot" }));
+    } else {
+      res.writeHead(302, { Location: "https://github.com/lyon490270581-byte/subwrench" });
+      res.end();
+    }
+  }).listen(PORT, () => console.log(`health on :${PORT}`));
+}
+
+// Optional HTTP proxy for Telegram API (needed in CN; not on Render)
+let agent;
+if (process.env.HTTPS_PROXY) {
+  const { HttpsProxyAgent } = await import("https-proxy-agent");
+  agent = new HttpsProxyAgent(process.env.HTTPS_PROXY);
+}
+
+const bot = new Telegraf(TOKEN, { handlerTimeout: 60000, telegram: { agent } });
 const SUB_EXTS = ["srt", "vtt", "sbv", "ass"];
 const IMG_EXTS = ["jpg", "jpeg", "png", "webp", "avif", "tiff", "gif"];
 
-const HELP = `**subkit** 鈥?file & text swiss-army knife
+const HELP = `<b>subwrench</b> - file &amp; text swiss-army knife
 
-**Subtitles** 鈥?send a .srt/.vtt/.sbv/.ass file with a caption:
-"to vtt" convert 路 "shift 500" shift ms 路 "stats"
+<b>Subtitles</b> - send a .srt/.vtt/.sbv/.ass file with a caption:
+"to vtt" convert | "shift 500" shift ms | "stats"
 
-**Images** 鈥?send a photo with caption:
-"webp 80" convert to webp at q80 路 "png" 路 "resize 800" (width)
+<b>Images</b> - send a photo with caption:
+"webp 80" convert to webp at q80 | "png" | "resize 800" (width)
 
-**Text** 鈥?send any text message:
+<b>Text</b> - send any text message:
 /count, /tokens, /case title
-Send raw JSON 鈫?auto-formatted.`;
+Send raw JSON -&gt; auto-formatted.`;
 
-bot.start((ctx) => ctx.replyWithMarkdown(HELP));
-bot.help((ctx) => ctx.replyWithMarkdown(HELP));
+bot.start((ctx) => ctx.replyWithHTML(HELP));
+bot.help((ctx) => ctx.replyWithHTML(HELP));
 
 // 鈹€鈹€ subtitle / json documents 鈹€鈹€
 bot.on("document", async (ctx) => {
@@ -58,8 +80,7 @@ bot.on("document", async (ctx) => {
     if (caption.startsWith("stats") || !caption) {
       const s = core.subtitles.stats(content, fmt);
       return ctx.reply(
-        `Detected: ${fmt}\nCues: ${s.cues}\nChars: ${s.chars}\nDuration: ${s.durationSec}s\n\nCaption \`to vtt|srt|sbv|ass\` to convert, \`shift 卤ms\`, \`stats\`.`,
-        { parse_mode: "Markdown" }
+        `Detected: ${fmt}\nCues: ${s.cues}\nChars: ${s.chars}\nDuration: ${s.durationSec}s\n\nCaption "to vtt|srt|sbv|ass" to convert, "shift 500" (ms), or "stats".`
       );
     }
     if (caption.startsWith("to ")) {
@@ -95,7 +116,7 @@ bot.on("photo", async (ctx) => {
       width,
     });
     return ctx.replyWithDocument(
-      { source: r.data, filename: `subkit.${fmt}` },
+      { source: r.data, filename: `subwrench.${fmt}` },
       { caption: `${r.format} ${r.width}x${r.height} ${(r.size / 1024).toFixed(0)}KB (saved ${r.savedPct}%)` }
     );
   } catch (e) {
@@ -126,7 +147,7 @@ bot.on("text", (ctx) => {
 
 bot.catch((err, ctx) => console.error(`bot error for ${ctx.updateType}:`, err.message));
 bot.launch();
-console.log("subkit bot running");
+console.log("subwrench bot running");
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));

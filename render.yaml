@@ -8,4 +8,16 @@ services:
     healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
-        value: 20
+        value: "20"
+  - type: web
+    name: subwrench-bot
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run bot
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: BOT_TOKEN
+        sync: false
