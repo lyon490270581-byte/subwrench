@@ -1,0 +1,25 @@
+{
+  "name": "subwrench-core",
+  "version": "0.1.0",
+  "description": "Zero-dependency file & text processing engine: subtitle convert/shift/merge, text stats, JSON tools, hashes, image convert",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "keywords": [
+    "subtitle",
+    "srt",
+    "vtt",
+    "ass",
+    "sbv",
+    "convert",
+    "text",
+    "json",
+    "hash",
+    "image",
+    "token",
+    "counter"
+  ],
+  "license": "MIT"
+}

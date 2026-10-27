@@ -1,0 +1,15 @@
+{
+  "name": "subwrench-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/core",
+    "packages/cli",
+    "packages/mcp",
+    "packages/bot"
+  ],
+  "scripts": {
+    "test": "node packages/core/test/run.test.mjs",
+    "bot": "node packages/bot/src/index.js"
+  }
+}

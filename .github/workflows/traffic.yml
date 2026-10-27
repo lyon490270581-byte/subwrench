@@ -1,0 +1,34 @@
+name: traffic-report
+on:
+  schedule:
+    - cron: "0 1 * * *" # daily 01:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate traffic report
+        env:
+          GH_OWNER: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/stats.mjs | tee report.txt
+      - name: Append to history
+        run: |
+          mkdir -p .traffic
+          cat report.txt >> .traffic/history.log
+          echo "---" >> .traffic/history.log
+      - name: Commit
+        run: |
+          git config user.name "traffic-bot"
+          git config user.email "actions@github.com"
+          git add .traffic
+          git diff --cached --quiet || git commit -m "traffic report $(date -u +%F)"
+          git push

@@ -1,0 +1,17 @@
+{
+  "name": "subwrench-cli",
+  "version": "0.1.0",
+  "description": "Swiss-army CLI for files & text: subtitle convert/shift/merge, text stats & tokens, JSON tools, hashes, image compress",
+  "type": "module",
+  "bin": {
+    "subkit": "./bin/subkit.js"
+  },
+  "dependencies": {
+    "subwrench-core": "0.1.0",
+    "commander": "^12.1.0"
+  },
+  "optionalDependencies": {
+    "sharp": "^0.33.5"
+  },
+  "license": "MIT"
+}
