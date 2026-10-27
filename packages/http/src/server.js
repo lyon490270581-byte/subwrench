@@ -76,9 +76,41 @@ function buildServer() {
   return server;
 }
 
+const LANDING = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>subwrench — MCP server</title><meta name="description" content="9 local-first MCP tools: subtitle convert/shift/merge, multilingual text count, LLM token estimation, JSON tools, hashes. Zero telemetry."><style>
+*{box-sizing:border-box;margin:0}body{font-family:ui-monospace,'Cascadia Code',Menlo,monospace;background:#0d1117;color:#e6edf3;line-height:1.6;padding:48px 20px}
+.wrap{max-width:720px;margin:0 auto}h1{font-size:28px;color:#58a6ff}h1 span{color:#8b949e;font-size:16px}
+.tag{display:inline-block;background:#1f6feb33;color:#79c0ff;border:1px solid #1f6feb;border-radius:99px;padding:2px 12px;font-size:12px;margin:8px 6px 0 0}
+h2{font-size:16px;color:#e6edf3;margin:32px 0 8px}ul{list-style:none}li{padding:6px 0;border-bottom:1px solid #21262d}li b{color:#7ee787}
+code{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:2px 8px;font-size:13px}
+.pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto;margin:8px 0}
+a{color:#58a6ff}footer{margin-top:40px;color:#8b949e;font-size:12px}
+</style></head><body><div class="wrap">
+<h1>subwrench <span>v0.1.0</span></h1>
+<span class="tag">MCP server</span><span class="tag">100% local compute</span><span class="tag">zero telemetry</span><span class="tag">MIT</span>
+<h2>Tools (9)</h2><ul>
+<li><b>subtitle_convert</b> — srt / vtt / sbv / ass interconversion</li>
+<li><b>subtitle_shift</b> — shift all cues by ±ms</li>
+<li><b>subtitle_merge</b> — merge bilingual subtitles, time-sorted</li>
+<li><b>subtitle_stats</b> — cues, duration, char count</li>
+<li><b>text_count</b> — multilingual word/char stats (CJK-aware)</li>
+<li><b>estimate_tokens</b> — LLM token estimate for gpt/claude/gemini</li>
+<li><b>case_transform</b> — 9 case conversions</li>
+<li><b>json_tool</b> — validate/format/minify/sort/path-get</li>
+<li><b>hash_tool</b> — uuid/sha256/sha1/md5/base64</li>
+</ul>
+<h2>Connect (remote HTTP)</h2>
+<div class="pre">URL: https://subwrench.onrender.com/mcp</div>
+<h2>Or run locally (stdio)</h2>
+<div class="pre">npx -y subwrench-mcp</div>
+<h2>Also available</h2>
+CLI: <code>npx -y subwrench-cli</code> · npm: <code>subwrench-core</code> · GitHub: <a href="https://github.com/lyon490270581-byte/subwrench">lyon490270581-byte/subwrench</a>
+<footer>subwrench — one engine, four distribution channels. All processing happens on this server with no data retention.</footer>
+</div></body></html>`;
+
 const app = express();
 app.use(express.json({ limit: "2mb" }));
 
+app.get("/", (_req, res) => res.type("html").send(LANDING));
 app.get("/health", (_req, res) => res.json({ ok: true, server: "subwrench-mcp", version: "0.1.0" }));
 
 app.post("/mcp", async (req, res) => {
