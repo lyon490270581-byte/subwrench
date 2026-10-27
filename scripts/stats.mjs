@@ -85,10 +85,10 @@ if (owner) {
 import fs from "node:fs";
 const botDb = "data/bot-stats.db";
 if (fs.existsSync(botDb)) {
-  const { Database } = await import("sql.js");
-  const SQL = await Database.initFs?.(botDb) ?? null;
   console.log("\n---- Telegram bot ----");
   try {
+    const { default: initSqlJs } = await import("sql.js");
+    const SQL = await initSqlJs();
     const db = new SQL.Database(fs.readFileSync(botDb));
     const q = (sql) => {
       const res = db.exec(sql);
