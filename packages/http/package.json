@@ -1,0 +1,20 @@
+{
+  "name": "subwrench-mcp-http",
+  "version": "0.1.0",
+  "description": "HTTP (Streamable) deployment of subwrench MCP server",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "express": "^4.21.0",
+    "zod": "^3.24.0",
+    "subwrench-core": "0.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

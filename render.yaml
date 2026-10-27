@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: subwrench-mcp
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run http
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 20

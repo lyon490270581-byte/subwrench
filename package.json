@@ -6,10 +6,13 @@
     "packages/core",
     "packages/cli",
     "packages/mcp",
-    "packages/bot"
+    "packages/bot",
+    "packages/http"
   ],
   "scripts": {
     "test": "node packages/core/test/run.test.mjs",
-    "bot": "node packages/bot/src/index.js"
+    "bot": "node packages/bot/src/index.js",
+    "http": "node packages/http/src/server.js"
   }
 }
+
