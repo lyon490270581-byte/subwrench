@@ -103,3 +103,21 @@ subwrench traffic report 2026-11-02
 
 ---- Telegram bot ---- (no local db; run stats on the bot server)
 ---
+
+subwrench traffic report 2026-11-03
+
+---- npm downloads ----
+  subwrench-core day:     4  week:   305  month:    305  mom-trend:-91%
+  subwrench-cli  day:     4  week:   487  month:    487  mom-trend:-94%
+  subwrench-mcp  day:     3  week:   339  month:    339  mom-trend:-94%
+  subwrench-bot: not published yet
+  TOTAL          week: 1131  ####################
+
+---- npm dependents ----
+  subwrench-core: 202435 packages depend on it
+
+---- GitHub ----
+  repo not found / private
+
+---- Telegram bot ---- (no local db; run stats on the bot server)
+---
